@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="images/meta.png" />
+  <title>Osiyo Xalqaro Universitet</title>
+  <!-- Meta Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1255464942095883');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1255464942095883&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Toastify CSS and JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+  <div class="max-w-7xl w-full flex flex-col lg:flex-row items-center justify-between gap-10">
+    <!-- Левая колонка -->
+    <div class="w-full lg:w-1/2 space-y-4">
+      <img src="images/logo.svg" alt="OXU Logo" class="h-16 mx-auto lg:mx-0">
+      <h2 class="text-4xl md:text-4xl lg:text-5xl font-bold text-[#373435] text-center lg:text-left">
+        <span id="oxu-prefix" class="text-[#18178C] uppercase font-extrabold"></span>
+        <span id="oxu-title"></span>
+      </h2>
+      <p id="subtitle" class="text-gray-600 text-center lg:text-left"></p>
+
+      <form id="main-form" class="space-y-4" novalidate>
+        <input type="text" id="name-input" name="name" placeholder="" required
+          class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]">
+        <input type="tel" id="phone-input" name="phone" placeholder="" required
+          class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]">
+        <button type="submit" id="send-btn"
+          class="w-full bg-[#18178C] hover:bg-[#0f0f6e] text-white font-medium py-3 rounded-md transition">
+        </button>
+      </form>
+
+      <p id="note" class="text-sm text-gray-500"></p>
+
+      <div class="flex gap-4 mt-4 justify-center lg:justify-start">
+        <button class="lang-btn flex items-center px-4 py-2 bg-gray-200 rounded-md" data-lang="uz">
+          <img src="images/uz.svg" class="h-5 mr-2"><span id="label-uz"></span>
+        </button>
+        <button class="lang-btn flex items-center px-4 py-2 bg-gray-200 rounded-md" data-lang="ru">
+          <img src="images/ru.svg" class="h-5 mr-2"><span id="label-ru"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Правая колонка -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center">
+      <img class="max-w-full h-auto lg:h-[700px] rounded-xl shadow-md" src="images/banner.png" alt="">
+    </div>
+  </div>
+
+  <script>
+    // Тексты переводов
+    const translations = {
+      uz: {
+        prefix: 'OSIYO XALQARO UNIVERSITETI',
+        title: 'da o‘qimoqchimisiz?',
+        subtitle: 'Telefon raqamingizni qoldiring — biz siz bilan bog‘lanamiz va barcha savollarga javob beramiz.',
+        name: 'Ismingiz',
+        phonePlaceholder: '+998 (__) ___-__-__',
+        send: 'Yuborish',
+        note: '*Qabul Buxoro va Xorazm filiallarida olib boriladi',
+        uzbek: "O'zbekcha",
+        russian: 'Ruscha'
+      },
+      ru: {
+        prefix: 'Азиатский Международный Университет ',
+        title: '- хотите учиться у нас?',
+        subtitle: 'Оставьте свой номер — мы свяжемся с вами и ответим на все вопросы.',
+        name: 'Ваше имя',
+        phonePlaceholder: '+998 (__) ___-__-__',
+        send: 'Отправить',
+        note: '*Прием проводится в филиалах Бухары и Хорезма',
+        uzbek: 'Узбекский',
+        russian: 'Русский'
+      }
+    };
+
+    let currentLang = 'uz';
+    function applyLang(lang) {
+      const t = translations[lang];
+      document.getElementById('oxu-prefix').textContent = t.prefix;
+      document.getElementById('oxu-title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('name-input').placeholder = t.name;
+      document.getElementById('phone-input').placeholder = t.phonePlaceholder;
+      document.getElementById('send-btn').textContent = t.send;
+      document.getElementById('note').textContent = t.note;
+      document.getElementById('label-uz').textContent = t.uzbek;
+      document.getElementById('label-ru').textContent = t.russian;
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('bg-[#353945]', btn.dataset.lang === lang);
+        btn.classList.toggle('text-white', btn.dataset.lang === lang);
+      });
+      currentLang = lang;
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+    });
+    applyLang(currentLang);
+
+    // Маска для телефона
+    document.getElementById('phone-input').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.startsWith('998')) v = v.slice(3);
+      v = v.slice(0, 9);
+      let fmt = '+998 ';
+      if (v.length > 0) fmt += v.substring(0, 2);
+      if (v.length >= 3) fmt += ' ' + v.substring(2, 5);
+      if (v.length >= 6) fmt += '-' + v.substring(5, 7);
+      if (v.length >= 8) fmt += '-' + v.substring(7, 9);
+      e.target.value = fmt;
+    });
+
+    // Отправка формы с Toastify
+    document.getElementById('main-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = document.getElementById('name-input').value.trim();
+      const phone = document.getElementById('phone-input').value.replace(/\D/g, '');
+      try {
+        await fetch('https://newapi.oxu.uz/api/courses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname: name, phone })
+        });
+        Toastify({
+          text: currentLang === 'uz' ? 'Muvaffaqiyatli yuborildi!' : 'Успешно отправлено!',
+          duration: 3000,
+          close: true,
+          gravity: 'top',
+          position: 'right',
+          backgroundColor: '#22c55e'
+        }).showToast();
+        setTimeout(() => window.location.href = 'thank-you.html', 500);
+      } catch (err) {
+        console.error(err);
+        Toastify({
+          text: currentLang === 'uz' ? 'Formani to\'ldiring!' : 'Произошла ошибка!',
+          duration: 3000,
+          close: true,
+          gravity: 'top',
+          position: 'right',
+          backgroundColor: '#ef4444'
+        }).showToast();
+      }
+    });
+  </script>
+</body>
+</html>

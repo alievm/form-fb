@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="images/meta.png" />
+  <title>Ro‘yxatdan o‘tganingiz uchun rahmat!</title>
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1255464942095883');
+  fbq('track', 'PageView');
+  fbq('track', 'CompleteRegistration');
+  fbq('track', 'Lead');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1255464942095883&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lottie Player -->
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script
+  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+  type="module"
+></script>
+  <style>
+    /* Чтобы canvas-confetti занимал весь экран */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 overflow-hidden">
+  <div class="flex items-center justify-center h-screen p-8">
+    <div class="bg-white max-w-md w-full p-8 text-center space-y-6 z-20">
+      
+      <!-- Lottie-анимация -->
+      <div class="w-24 h-24 mx-auto md:w-48 md:h-48">
+
+
+        <dotlottie-player
+  src="https://lottie.host/c2fa2358-5f62-4d3b-b8d9-76dbe5291caa/Ag19AENd2W.lottie"
+  background="transparent"
+  speed="1"
+   class="w-full h-full"
+  loop
+  autoplay
+></dotlottie-player>
+      </div>
+
+      <!-- Заголовок -->
+      <h2 class="text-3xl font-bold text-[#18178C]">
+        Ro‘yxatdan o‘tganingiz uchun rahmat!
+      </h2>
+
+      <!-- Описание -->
+      <p class="text-gray-600 text-lg">
+        Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz.
+      </p>
+
+      <!-- Кнопка возврата -->
+      <a
+        href="https://form.oxu.uz"
+        class="inline-block bg-[#18178C] text-white text-lg px-6 py-3 rounded-lg shadow-md hover:bg-opacity-70 transition"
+      >
+        Asosiy sahifaga qaytish
+      </a>
+    </div>
+  </div>
+</body>
+</html>
