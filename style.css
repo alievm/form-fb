@@ -38,3 +38,9 @@
   body {
     font-family: 'Gilroy', sans-serif;
   }
+
+  #oxu-prefix {
+    background: linear-gradient(83deg, #000DE3 52.84%, #000DE3 95.93%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
