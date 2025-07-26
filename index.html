@@ -28,6 +28,20 @@
           class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]">
         <input type="tel" id="phone-input" name="phone" placeholder="" required
           class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]">
+          <select id="filial-select"
+          class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]"
+          required>
+          <option value="" disabled selected hidden>Filialni tanlang</option>
+          <option value="Bukhara">Buxoro</option>
+          <option value="Khorazm">Xorazm</option>
+        </select>
+
+          <select id="speciality-select"
+  class="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#18178C]"
+  required>
+  <option value="" disabled selected hidden>Yo'nalishni tanlang</option>
+</select>
+
         <button style="background: linear-gradient(83deg, #0025B9 52.84%, #004BFF 95.93%);" type="submit" id="send-btn"
           class="w-full hover:bg-[#0f0f6e] text-white font-medium py-3 rounded-md transition">
         </button>
@@ -63,6 +77,8 @@
         send: 'Yuborish',
         note: '*Qabul Buxoro va Xorazm filiallarida olib boriladi',
         uzbek: "O'zbekcha",
+        specialityPlaceholder: "Yo'nalishni tanlang", // uz
+        filialPlaceholder: "Filialni tanlang",
         russian: 'Ruscha'
       },
       ru: {
@@ -74,6 +90,8 @@
         send: 'Отправить',
         note: '*Прием проводится в филиалах Бухары и Хорезма',
         uzbek: 'Узбекский',
+        specialityPlaceholder: "Выберите направление", // ru
+        filialPlaceholder: "Выберите филиал",
         russian: 'Русский'
       }
     };
@@ -90,6 +108,11 @@
       document.getElementById('note').textContent = t.note;
       document.getElementById('label-uz').textContent = t.uzbek;
       document.getElementById('label-ru').textContent = t.russian;
+      document.getElementById('speciality-select').options[0].text = t.specialityPlaceholder;
+      const filialSelect = document.getElementById('filial-select');
+if (filialSelect) {
+  filialSelect.options[0].text = t.filialPlaceholder;
+}
 
       document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('bg-[#353945]', btn.dataset.lang === lang);
@@ -117,36 +140,108 @@
 
     // Отправка формы с Toastify
     document.getElementById('main-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const name = document.getElementById('name-input').value.trim();
-      const phone = document.getElementById('phone-input').value.replace(/\D/g, '');
-      try {
-        await fetch('https://newapi.oxu.uz/api/courses', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullname: name, phone })
-        });
-        Toastify({
-          text: currentLang === 'uz' ? 'Muvaffaqiyatli yuborildi!' : 'Успешно отправлено!',
-          duration: 3000,
-          close: true,
-          gravity: 'top',
-          position: 'right',
-          backgroundColor: '#22c55e'
-        }).showToast();
-        setTimeout(() => window.location.href = 'thank-you.html', 500);
-      } catch (err) {
-        console.error(err);
-        Toastify({
-          text: currentLang === 'uz' ? 'Formani to\'ldiring!' : 'Произошла ошибка!',
-          duration: 3000,
-          close: true,
-          gravity: 'top',
-          position: 'right',
-          backgroundColor: '#ef4444'
-        }).showToast();
+  e.preventDefault();
+
+  const name = document.getElementById('name-input').value.trim();
+  const rawPhone = document.getElementById('phone-input').value;
+  const phone = rawPhone.replace(/\D/g, ''); // все цифры
+  const speciality = document.getElementById('speciality-select').value;
+  const filial = document.getElementById('filial-select').value;
+
+  const isUz = currentLang === 'uz';
+  const showError = (msgUz, msgRu) => {
+    Toastify({
+      text: isUz ? msgUz : msgRu,
+      duration: 3000,
+      close: true,
+      gravity: 'top',
+      position: 'right',
+      backgroundColor: '#ef4444'
+    }).showToast();
+  };
+
+  if (!name) {
+    showError("Ismingizni kiriting", "Введите имя");
+    return;
+  }
+
+
+
+if (!/^998\d{9}$/.test(phone)) {
+  showError("Telefon raqam noto‘g‘ri", "Неправильный номер телефона");
+  return;
+}
+
+  if (!filial) {
+    showError("Filialni tanlang", "Выберите филиал");
+    return;
+  }
+
+  if (!speciality) {
+    showError("Yo'nalishni tanlang", "Выберите направление");
+    return;
+  }
+
+  try {
+    await fetch('https://newapi.oxu.uz/api/courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullname: name, phone, filial, speciality })
+    });
+
+    Toastify({
+      text: isUz ? 'Muvaffaqiyatli yuborildi!' : 'Успешно отправлено!',
+      duration: 3000,
+      close: true,
+      gravity: 'top',
+      position: 'right',
+      backgroundColor: '#22c55e'
+    }).showToast();
+
+    setTimeout(() => window.location.href = 'thank-you.html', 500);
+  } catch (err) {
+    console.error(err);
+    showError("Xatolik yuz berdi", "Произошла ошибка");
+  }
+});
+
+    async function loadSpecialities() {
+  const select = document.getElementById('speciality-select');
+  if (!select) return;
+
+  select.innerHTML = `<option value="" disabled selected hidden>${translations[currentLang].specialityPlaceholder}</option>`;
+
+  try {
+    const res = await fetch("https://newapi.oxu.uz/api/uz/speciality");
+    const json = await res.json();
+    if (!json.status || !Array.isArray(json.data)) throw new Error("Invalid response");
+
+    json.data.forEach(faculty => {
+      const group = document.createElement('optgroup');
+      group.label = faculty.name;
+
+      faculty.tranlations_ides.forEach(dir => {
+        const tr = dir.translations.find(t => t.locale === currentLang);
+        if (tr) {
+          const option = document.createElement('option');
+          option.value = dir.speciality_id; // ✅ отправляем ID
+          option.textContent = tr.title;     // ✅ показываем перевод
+          group.appendChild(option);
+        }
+      });
+
+      if (group.children.length > 0) {
+        select.appendChild(group);
       }
     });
+  } catch (err) {
+    console.error("Error loading specialities:", err);
+  }
+}
+
+
+// Запускаем при загрузке и при смене языка
+loadSpecialities();
   </script>
 
   <!-- Meta Pixel Code -->
