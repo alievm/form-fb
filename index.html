@@ -185,9 +185,8 @@ if (!/^998\d{9}$/.test(phone)) {
   try {
     await fetch('https://newapi.oxu.uz/api/courses', {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullname: name, phone, filial, speciality })
+      body: JSON.stringify({ fullname: name, phone, filial, sort_id: speciality })
     });
 
     Toastify({
@@ -223,10 +222,11 @@ if (!/^998\d{9}$/.test(phone)) {
 
       faculty.tranlations_ides.forEach(dir => {
         const tr = dir.translations.find(t => t.locale === currentLang);
+        
         if (tr) {
           const option = document.createElement('option');
-          option.value = dir.speciality_id; // ✅ отправляем ID
-          option.textContent = tr.title;     // ✅ показываем перевод
+          option.value = dir.speciality_id;
+          option.textContent = tr.title;
           group.appendChild(option);
         }
       });
