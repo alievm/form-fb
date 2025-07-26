@@ -185,6 +185,7 @@ if (!/^998\d{9}$/.test(phone)) {
   try {
     await fetch('https://newapi.oxu.uz/api/courses', {
       method: 'POST',
+      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fullname: name, phone, filial, speciality })
     });
