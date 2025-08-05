@@ -59,136 +59,135 @@
     </div>
   </div>
 
-  <script>
-    // Тексты переводов (специальность убрана)
-    const translations = {
-      uz: {
-        prefix: 'OSIYO XALQARO UNIVERSITETI',
-        title: 'da o‘qimoqchimisiz?',
-        subtitle: 'Telefon raqamingizni qoldiring — biz siz bilan bog‘lanamiz va barcha savollarga javob beramiz.',
-        name: 'Ismingiz',
-        phonePlaceholder: '+998 (__) ___-__-__',
-        send: 'Yuborish',
-        note: '*Qabul Buxoro va Xorazm filiallarida olib boriladi',
-        uzbek: "O'zbekcha",
-        filialPlaceholder: "Filialni tanlang",
-        russian: 'Ruscha'
-      },
-      ru: {
-        prefix: 'Азиатский Международный Университет',
-        title: '- хотите учиться у нас?',
-        subtitle: 'Оставьте свой номер — мы свяжемся с вами и ответим на все вопросы.',
-        name: 'Ваше имя',
-        phonePlaceholder: '+998 (__) ___-__-__',
-        send: 'Отправить',
-        note: '*Прием проводится в филиалах Бухары и Хорезма',
-        uzbek: 'Узбекский',
-        filialPlaceholder: "Выберите филиал",
-        russian: 'Русский'
-      }
+<script>
+  // Переводы
+  const translations = {
+    uz: {
+      prefix: 'OSIYO XALQARO UNIVERSITETI',
+      title: 'da o‘qimoqchimisiz?',
+      subtitle: 'Telefon raqamingizni qoldiring — biz siz bilan bog‘lanamiz va barcha savollarga javob beramiz.',
+      name: 'Ismingiz',
+      phonePlaceholder: '+998 (__) ___-__-__',
+      send: 'Yuborish',
+      note: '*Qabul Buxoro va Xorazm filiallarida olib boriladi',
+      uzbek: "O'zbekcha",
+      filialPlaceholder: "Filialni tanlang",
+      russian: 'Ruscha'
+    },
+    ru: {
+      prefix: 'Азиатский Международный Университет',
+      title: '- хотите учиться у нас?',
+      subtitle: 'Оставьте свой номер — мы свяжемся с вами и ответим на все вопросы.',
+      name: 'Ваше имя',
+      phonePlaceholder: '+998 (__) ___-__-__',
+      send: 'Отправить',
+      note: '*Прием проводится в филиалах Бухары и Хорезма',
+      uzbek: 'Узбекский',
+      filialPlaceholder: "Выберите филиал",
+      russian: 'Русский'
+    }
+  };
+
+  let currentLang = 'uz';
+  function applyLang(lang) {
+    const t = translations[lang];
+    document.getElementById('oxu-prefix').textContent = t.prefix;
+    document.getElementById('oxu-title').textContent = t.title;
+    document.getElementById('subtitle').textContent = t.subtitle;
+    document.getElementById('name-input').placeholder = t.name;
+    document.getElementById('phone-input').placeholder = t.phonePlaceholder;
+    document.getElementById('send-btn').textContent = t.send;
+    document.getElementById('note').textContent = t.note;
+    document.getElementById('label-uz').textContent = t.uzbek;
+    document.getElementById('label-ru').textContent = t.russian;
+    document.getElementById('filial-select').options[0].text = t.filialPlaceholder;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('bg-[#353945]', btn.dataset.lang === lang);
+      btn.classList.toggle('text-white', btn.dataset.lang === lang);
+    });
+    currentLang = lang;
+  }
+  document.querySelectorAll('.lang-btn').forEach(btn =>
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang))
+  );
+  applyLang(currentLang);
+
+  // Маска телефона
+  document.getElementById('phone-input').addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.startsWith('998')) v = v.slice(3);
+    v = v.slice(0, 9);
+    let fmt = '+998 ';
+    if (v.length > 0) fmt += v.substring(0, 2);
+    if (v.length >= 3) fmt += ' ' + v.substring(2, 5);
+    if (v.length >= 6) fmt += '-' + v.substring(5, 7);
+    if (v.length >= 8) fmt += '-' + v.substring(7, 9);
+    e.target.value = fmt;
+  });
+
+  // Отправка формы с блокировкой кнопки
+  const form = document.getElementById('main-form');
+  const sendBtn = document.getElementById('send-btn');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const name = document.getElementById('name-input').value.trim();
+    const rawPhone = document.getElementById('phone-input').value;
+    const phone = rawPhone.replace(/\D/g, '');
+    const filial = document.getElementById('filial-select').value;
+    const isUz = currentLang === 'uz';
+
+    const showError = (msgUz, msgRu) => {
+      Toastify({
+        text: isUz ? msgUz : msgRu,
+        duration: 3000,
+        close: true,
+        gravity: 'top',
+        position: 'right',
+        backgroundColor: '#ef4444'
+      }).showToast();
     };
 
-    let currentLang = 'uz';
-    function applyLang(lang) {
-      const t = translations[lang];
-      document.getElementById('oxu-prefix').textContent = t.prefix;
-      document.getElementById('oxu-title').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('name-input').placeholder = t.name;
-      document.getElementById('phone-input').placeholder = t.phonePlaceholder;
-      document.getElementById('send-btn').textContent = t.send;
-      document.getElementById('note').textContent = t.note;
-      document.getElementById('label-uz').textContent = t.uzbek;
-      document.getElementById('label-ru').textContent = t.russian;
+    if (!name)       { showError("Ismingizni kiriting", "Введите имя"); return; }
+    if (!/^998\d{9}$/.test(phone)) { showError("Telefon raqam noto‘g‘ri", "Неправильный номер телефона"); return; }
+    if (!filial)     { showError("Filialni tanlang", "Выберите филиал"); return; }
 
-      const filialSelect = document.getElementById('filial-select');
-      if (filialSelect) {
-        filialSelect.options[0].text = t.filialPlaceholder;
-      }
+    // --- Лоадер: блокируем кнопку ---
+    const originalText = sendBtn.textContent;
+    sendBtn.disabled = true;
+    sendBtn.classList.add('opacity-50','cursor-not-allowed');
+    sendBtn.textContent = originalText + '...';
 
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('bg-[#353945]', btn.dataset.lang === lang);
-        btn.classList.toggle('text-white', btn.dataset.lang === lang);
+    try {
+      await fetch('https://newapi.oxu.uz/api/courses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullname: name, phone, filial, sort_id: 14 })
       });
-      currentLang = lang;
+
+      Toastify({
+        text: isUz ? 'Muvaffaqiyatli yuborildi!' : 'Успешно отправлено!',
+        duration: 3000,
+        close: true,
+        gravity: 'top',
+        position: 'right',
+        backgroundColor: '#22c55e'
+      }).showToast();
+
+      setTimeout(() => window.location.href = 'thank-you.html', 500);
+
+    } catch (err) {
+      console.error(err);
+      showError("Xatolik yuz berdi", "Произошла ошибка");
+
+      // --- В случае ошибки возвращаем кнопку в исходное состояние ---
+      sendBtn.disabled = false;
+      sendBtn.classList.remove('opacity-50','cursor-not-allowed');
+      sendBtn.textContent = originalText;
     }
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => applyLang(btn.dataset.lang));
-    });
-    applyLang(currentLang);
-
-    // Маска для телефона
-    document.getElementById('phone-input').addEventListener('input', e => {
-      let v = e.target.value.replace(/\D/g, '');
-      if (v.startsWith('998')) v = v.slice(3);
-      v = v.slice(0, 9);
-      let fmt = '+998 ';
-      if (v.length > 0) fmt += v.substring(0, 2);
-      if (v.length >= 3) fmt += ' ' + v.substring(2, 5);
-      if (v.length >= 6) fmt += '-' + v.substring(5, 7);
-      if (v.length >= 8) fmt += '-' + v.substring(7, 9);
-      e.target.value = fmt;
-    });
-
-    // Отправка формы с Toastify
-    document.getElementById('main-form').addEventListener('submit', async e => {
-      e.preventDefault();
-
-      const name = document.getElementById('name-input').value.trim();
-      const rawPhone = document.getElementById('phone-input').value;
-      const phone = rawPhone.replace(/\D/g, '');
-      const filial = document.getElementById('filial-select').value;
-
-      const isUz = currentLang === 'uz';
-      const showError = (msgUz, msgRu) => {
-        Toastify({
-          text: isUz ? msgUz : msgRu,
-          duration: 3000,
-          close: true,
-          gravity: 'top',
-          position: 'right',
-          backgroundColor: '#ef4444'
-        }).showToast();
-      };
-
-      if (!name) {
-        showError("Ismingizni kiriting", "Введите имя");
-        return;
-      }
-
-      if (!/^998\d{9}$/.test(phone)) {
-        showError("Telefon raqam noto‘g‘ri", "Неправильный номер телефона");
-        return;
-      }
-
-      if (!filial) {
-        showError("Filialni tanlang", "Выберите филиал");
-        return;
-      }
-
-      try {
-        await fetch('https://newapi.oxu.uz/api/courses', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullname: name, phone, filial, sort_id: 14 })
-        });
-
-        Toastify({
-          text: isUz ? 'Muvaffaqiyatli yuborildi!' : 'Успешно отправлено!',
-          duration: 3000,
-          close: true,
-          gravity: 'top',
-          position: 'right',
-          backgroundColor: '#22c55e'
-        }).showToast();
-
-        setTimeout(() => window.location.href = 'thank-you.html', 500);
-      } catch (err) {
-        console.error(err);
-        showError("Xatolik yuz berdi", "Произошла ошибка");
-      }
-    });
-  </script>
+  });
+</script>
 
 <!-- Meta Pixel Code -->
 <!-- <script>
