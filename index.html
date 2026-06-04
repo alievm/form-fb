@@ -54,6 +54,21 @@
         </div>
       </div>
 
+      <div class="exam-info">
+        <p id="exam-info-q" class="exam-info-q"></p>
+        <p id="exam-info-text" class="exam-info-text"></p>
+        <div class="exam-info-phones">
+          <a href="tel:+998553050009" class="exam-info-phone">
+            <span id="exam-info-bukhara-label"></span>
+            <span class="exam-info-num" dir="ltr">+998 55 305 00 09</span>
+          </a>
+          <a href="tel:+998553100009" class="exam-info-phone">
+            <span id="exam-info-khorazm-label"></span>
+            <span class="exam-info-num" dir="ltr">+998 55 310 00 09</span>
+          </a>
+        </div>
+      </div>
+
       <div class="form-card">
         <form id="main-form" class="form-fields" novalidate>
           <input autocomplete="off" type="text" id="name-input" name="name" placeholder="" required class="form-input">
@@ -109,6 +124,10 @@
         subtitle: 'Telefon raqamingizni qoldiring — biz siz bilan bog‘lanamiz va barcha savollarga javob beramiz.',
         examLabel: 'Imtihon sanalari',
         examMonth: 'iyun',
+        examInfoQ: 'Belgilangan sanada imtihonga kela olmaysizmi?',
+        examInfoText: 'O‘zingizga qulay sana va vaqtni tanlash uchun Call Center bilan bog‘laning.',
+        examInfoBukhara: 'Buxoro:',
+        examInfoKhorazm: 'Xorazm:',
         name: 'Ismingiz',
         phonePlaceholder: '+998 (__) ___-__-__',
         send: 'Ariza yuborish',
@@ -124,6 +143,10 @@
         subtitle: 'Оставьте свой номер — мы свяжемся с вами и ответим на все вопросы.',
         examLabel: 'Даты экзаменов',
         examMonth: 'июня',
+        examInfoQ: 'Не можете прийти на экзамен в указанную дату?',
+        examInfoText: 'Свяжитесь с Call Center, чтобы выбрать удобные дату и время.',
+        examInfoBukhara: 'Бухара:',
+        examInfoKhorazm: 'Хорезм:',
         name: 'Ваше имя',
         phonePlaceholder: '+998 (__) ___-__-__',
         send: 'Отправить заявку',
@@ -144,6 +167,10 @@
       document.getElementById('exam-label').textContent = t.examLabel;
       document.getElementById('exam-month-1').textContent = t.examMonth;
       document.getElementById('exam-month-2').textContent = t.examMonth;
+      document.getElementById('exam-info-q').textContent = t.examInfoQ;
+      document.getElementById('exam-info-text').textContent = t.examInfoText;
+      document.getElementById('exam-info-bukhara-label').textContent = t.examInfoBukhara;
+      document.getElementById('exam-info-khorazm-label').textContent = t.examInfoKhorazm;
       document.getElementById('name-input').placeholder = t.name;
       document.getElementById('phone-input').placeholder = t.phonePlaceholder;
       document.getElementById('send-btn-text').textContent = t.send;
