@@ -13,16 +13,20 @@
 <body class="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10">
   <div class="page-bg" aria-hidden="true"></div>
 
+  <div class="ios-toast-stack" id="ios-toast-stack" aria-live="polite"></div>
+
   <div class="page-wrap max-w-7xl w-full flex flex-col lg:flex-row items-center lg:items-center justify-between gap-10 lg:gap-14">
     <div class="content-panel w-full lg:w-[52%] flex flex-col justify-center">
       <header class="site-header">
-        <img src="images/logo2.svg" alt="OXU Logo" class="site-logo">
+        <img src="images/logo3.svg" alt="OXU Logo" class="site-logo">
       </header>
 
       <div class="hero-block">
         <h1 class="hero-title">
-          <span id="oxu-prefix" class="hero-prefix"></span>
-          <span id="oxu-title" class="hero-sub"></span>
+          <span class="hero-title-line1">
+            <span id="oxu-prefix" class="hero-prefix"></span><span id="oxu-title-lead" class="hero-sub"></span>
+          </span>
+          <span id="oxu-title-line" class="hero-sub hero-sub--line"></span>
         </h1>
         <p id="subtitle" class="hero-text"></p>
       </div>
@@ -58,62 +62,17 @@
           <img src="images/ru.svg" alt=""><span id="label-ru"></span>
         </button>
       </div>
-
-      <div class="exam-section">
-        <div class="exam-card" role="region" aria-labelledby="exam-label">
-          <div class="exam-card-label">
-            <span class="exam-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M3 9.5h18" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M8 3.5v3M16 3.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="8.5" cy="14" r="1" fill="currentColor"/>
-                <circle cx="12" cy="14" r="1" fill="currentColor"/>
-                <circle cx="15.5" cy="14" r="1" fill="currentColor"/>
-              </svg>
-            </span>
-            <p id="exam-label" class="exam-card-title"></p>
-          </div>
-          <div class="exam-card-dates">
-            <span class="exam-date-item">
-              <span class="exam-date-day">6</span>
-              <span id="exam-month-1" class="exam-date-month"></span>
-            </span>
-            <span class="exam-date-sep" aria-hidden="true"></span>
-            <span class="exam-date-item">
-              <span class="exam-date-day">13</span>
-              <span id="exam-month-2" class="exam-date-month"></span>
-            </span>
-          </div>
-        </div>
-
-        <div class="exam-info">
-          <p id="exam-info-q" class="exam-info-q"></p>
-          <p id="exam-info-text" class="exam-info-text"></p>
-          <div class="exam-info-phones">
-            <a href="tel:+998553050009" class="exam-info-phone">
-              <span id="exam-info-bukhara-label"></span>
-              <span class="exam-info-num" dir="ltr">+998 55 305 00 09</span>
-            </a>
-            <a href="tel:+998553100009" class="exam-info-phone">
-              <span id="exam-info-khorazm-label"></span>
-              <span class="exam-info-num" dir="ltr">+998 55 310 00 09</span>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <div class="video-col w-full lg:w-[48%] flex items-center justify-center">
-      <div class="video-panel">
-        <video
-          src="header.mp4"
-          autoplay
-          muted
-          loop
-          playsinline
-          aria-label="OXU"
-        ></video>
+    <div class="banner-col w-full lg:w-[48%] flex items-center justify-center">
+      <div class="banner-carousel" id="banner-carousel" aria-label="OXU banners">
+        <div class="banner-track" id="banner-track">
+          <div class="banner-slide"><img src="images/banners/01.png" alt="OXU" width="2160" height="2700" fetchpriority="high" decoding="async"></div>
+          <div class="banner-slide"><img src="images/banners/16.png" alt="OXU" width="2160" height="2700" decoding="async"></div>
+          <div class="banner-slide"><img src="images/banners/18.png" alt="OXU" width="2160" height="2700" decoding="async"></div>
+          <div class="banner-slide"><img src="images/banners/20 (2).png" alt="OXU" width="2160" height="2700" decoding="async"></div>
+        </div>
+        <div class="banner-indicators" id="banner-indicators" aria-hidden="true"></div>
       </div>
     </div>
   </div>
@@ -121,15 +80,10 @@
   <script>
     const translations = {
       uz: {
-        prefix: 'OSIYO XALQARO UNIVERSITETI',
-        title: 'da o‘qimoqchimisiz?',
-        subtitle: 'Telefon raqamingizni qoldiring — biz siz bilan bog‘lanamiz va barcha savollarga javob beramiz.',
-        examLabel: 'Imtihon sanalari',
-        examMonth: 'iyun',
-        examInfoQ: 'Belgilangan sanada imtihonga kela olmaysizmi?',
-        examInfoText: 'O‘zingizga qulay sana va vaqtni tanlash uchun Call Center bilan bog‘laning.',
-        examInfoBukhara: 'Buxoro:',
-        examInfoKhorazm: 'Xorazm:',
+        prefix: 'Qabul boshlandi',
+        titleLead: 'hoziroq',
+        titleLine: 'ariza qoldiring',
+        subtitle: '5 daqiqada arizangizni qoldiring, mutaxassis siz bilan bog‘lanadi',
         name: 'Ismingiz',
         phonePlaceholder: '+998 (__) ___-__-__',
         send: 'Ariza yuborish',
@@ -137,18 +91,20 @@
         uzbek: "O'zbekcha",
         specialityPlaceholder: "Qaysi yo‘nalishga topshirmoqchisiz?",
         filialPlaceholder: "Filialni tanlang",
-        russian: 'Ruscha'
+        russian: 'Ruscha',
+        appName: 'Osiyo Xalqaro Universitet',
+        toastNow: 'hozir',
+        toasts: [
+          { emoji: '🎓', accent: '#0025b9', title: '320 ta grant sizni kutmoqda', body: 'Grant asosida bepul o‘qish imkoniyati' },
+          { emoji: '📚', accent: '#7c3aed', title: '90+ yo‘nalish', body: 'O‘zingizga mos kasbni tanlang' },
+          { emoji: '🏆', icon: 'images/trophy_1f3c6.png', accent: '#f59e0b', title: 'Rektor stipendiyasi', body: 'Eng kuchli talabalar uchun maxsus stipendiya' }
+        ]
       },
       ru: {
-        prefix: 'Азиатский Международный Университет',
-        title: '— хотите учиться у нас?',
-        subtitle: 'Оставьте свой номер — мы свяжемся с вами и ответим на все вопросы.',
-        examLabel: 'Даты экзаменов',
-        examMonth: 'июня',
-        examInfoQ: 'Не можете прийти на экзамен в указанную дату?',
-        examInfoText: 'Свяжитесь с Call Center, чтобы выбрать удобные дату и время.',
-        examInfoBukhara: 'Бухара:',
-        examInfoKhorazm: 'Хорезм:',
+        prefix: 'Приём начался',
+        titleLead: 'оставьте',
+        titleLine: 'заявку прямо сейчас',
+        subtitle: 'Оставьте заявку за 5 минут — с вами свяжется специалист',
         name: 'Ваше имя',
         phonePlaceholder: '+998 (__) ___-__-__',
         send: 'Отправить заявку',
@@ -156,7 +112,14 @@
         uzbek: 'Узбекский',
         specialityPlaceholder: "Выберите направление",
         filialPlaceholder: "Выберите филиал",
-        russian: 'Русский'
+        russian: 'Русский',
+        appName: 'Азиатский Международный Университет',
+        toastNow: 'сейчас',
+        toasts: [
+          { emoji: '🎓', accent: '#0025b9', title: '320 грантов ждут вас', body: 'Возможность учиться бесплатно на гранте' },
+          { emoji: '📚', accent: '#7c3aed', title: '90+ направлений', body: 'Выберите подходящую профессию' },
+          { emoji: '🏆', icon: 'images/trophy_1f3c6.png', accent: '#f59e0b', title: 'Стипендия ректора', body: 'Специальная стипендия для лучших студентов' }
+        ]
       }
     };
 
@@ -164,15 +127,9 @@
     function applyLang(lang) {
       const t = translations[lang];
       document.getElementById('oxu-prefix').textContent = t.prefix;
-      document.getElementById('oxu-title').textContent = t.title;
+      document.getElementById('oxu-title-lead').textContent = '\u00A0' + t.titleLead;
+      document.getElementById('oxu-title-line').textContent = t.titleLine;
       document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('exam-label').textContent = t.examLabel;
-      document.getElementById('exam-month-1').textContent = t.examMonth;
-      document.getElementById('exam-month-2').textContent = t.examMonth;
-      document.getElementById('exam-info-q').textContent = t.examInfoQ;
-      document.getElementById('exam-info-text').textContent = t.examInfoText;
-      document.getElementById('exam-info-bukhara-label').textContent = t.examInfoBukhara;
-      document.getElementById('exam-info-khorazm-label').textContent = t.examInfoKhorazm;
       document.getElementById('name-input').placeholder = t.name;
       document.getElementById('phone-input').placeholder = t.phonePlaceholder;
       document.getElementById('send-btn-text').textContent = t.send;
@@ -310,6 +267,176 @@
     }
 
     loadSpecialities();
+
+    (function initBannerCarousel() {
+      const carousel = document.getElementById('banner-carousel');
+      const track = document.getElementById('banner-track');
+      const indicatorsWrap = document.getElementById('banner-indicators');
+      const slides = track.querySelectorAll('.banner-slide');
+      const total = slides.length;
+      const interval = 5000;
+      let current = 0;
+      let timer = null;
+      let touchStartX = 0;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.className = 'banner-indicator' + (i === 0 ? ' active' : '');
+        indicatorsWrap.appendChild(dot);
+      });
+
+      const indicators = indicatorsWrap.querySelectorAll('.banner-indicator');
+
+      function restartProgress(el) {
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = '';
+      }
+
+      function updateIndicators() {
+        indicators.forEach((el, i) => {
+          el.classList.remove('active', 'passed');
+          if (i < current) el.classList.add('passed');
+          if (i === current) {
+            el.classList.add('active');
+            restartProgress(el);
+          }
+        });
+      }
+
+      function goTo(index) {
+        current = (index + total) % total;
+        track.style.transform = `translate3d(-${current * 100}%, 0, 0)`;
+        updateIndicators();
+        resetTimer();
+      }
+
+      function next() {
+        goTo(current + 1);
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(next, interval);
+      }
+
+      carousel.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+      }, { passive: true });
+
+      carousel.addEventListener('click', e => {
+        const rect = carousel.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width * 0.35) goTo(current - 1);
+        else if (x > rect.width * 0.65) goTo(current + 1);
+      });
+
+      resetTimer();
+    })();
+
+    (function initIosToasts() {
+      const stack = document.getElementById('ios-toast-stack');
+      if (!stack) return;
+
+      const appleEmoji = code => `https://emojicdn.elk.sh/${encodeURIComponent(code)}?style=apple`;
+
+      function buildToast(item, t) {
+        const el = document.createElement('div');
+        el.className = 'ios-toast';
+        el.innerHTML = `
+          <div class="ios-toast-icon" style="--accent:${item.accent}">
+            <img src="${item.icon || appleEmoji(item.emoji)}" alt="" loading="lazy" draggable="false"
+                 onerror="this.style.display='none';this.insertAdjacentText('afterend','${item.emoji}');this.parentNode.classList.add('ios-toast-icon--text')">
+          </div>
+          <div class="ios-toast-body">
+            <div class="ios-toast-top">
+              <span class="ios-toast-app">${t.appName}</span>
+              <span class="ios-toast-time">${t.toastNow}</span>
+            </div>
+            <div class="ios-toast-title">${item.title}</div>
+            <div class="ios-toast-text">${item.body}</div>
+          </div>`;
+        return el;
+      }
+
+      const MAX_VISIBLE = 3;
+      const OFFSET = 12;
+      const SCALE_STEP = 0.06;
+
+      function restack() {
+        const items = Array.from(stack.querySelectorAll('.ios-toast'))
+          .filter(el => !el.classList.contains('leaving'));
+        const ordered = items.slice().reverse();
+
+        ordered.forEach((el, depth) => {
+          el.style.zIndex = String(100 - depth);
+          if (depth >= MAX_VISIBLE) {
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            el.style.transform =
+              `translateY(${(MAX_VISIBLE - 1) * OFFSET}px) scale(${1 - (MAX_VISIBLE - 1) * SCALE_STEP})`;
+            return;
+          }
+          el.style.opacity = '1';
+          el.style.pointerEvents = depth === 0 ? 'auto' : 'none';
+          el.style.transform =
+            `translateY(${depth * OFFSET}px) scale(${1 - depth * SCALE_STEP})`;
+        });
+      }
+
+      function dismiss(el) {
+        if (!el || el.classList.contains('leaving')) return;
+        el.classList.add('leaving');
+        el.style.pointerEvents = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-140%) scale(0.9)';
+        el.addEventListener('transitionend', () => {
+          el.remove();
+          restack();
+        }, { once: true });
+      }
+
+      function dismissAll() {
+        const items = Array.from(stack.querySelectorAll('.ios-toast'))
+          .filter(el => !el.classList.contains('leaving'));
+        items.slice().reverse().forEach((el, i) => {
+          setTimeout(() => dismiss(el), i * 240);
+        });
+      }
+
+      function showToasts() {
+        const t = translations[currentLang];
+        if (!t || !Array.isArray(t.toasts)) return;
+
+        const step = 850;
+        const startDelay = 500;
+
+        t.toasts.forEach((item, i) => {
+          setTimeout(() => {
+            const el = buildToast(item, t);
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(-140%) scale(0.9)';
+            stack.appendChild(el);
+            el.addEventListener('click', () => dismiss(el));
+            requestAnimationFrame(() => requestAnimationFrame(restack));
+          }, startDelay + i * step);
+        });
+
+        const lastArrive = startDelay + (t.toasts.length - 1) * step;
+        setTimeout(dismissAll, lastArrive + 4500);
+      }
+
+      if (document.readyState === 'complete') {
+        showToasts();
+      } else {
+        window.addEventListener('load', showToasts, { once: true });
+      }
+    })();
   </script>
 </body>
 </html>
