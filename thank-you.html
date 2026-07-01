@@ -26,6 +26,24 @@
       z-index: 10;
     }
   </style>
+    <!-- Advanced Matching data -->
+<script>
+  var oxuAM = (function () {
+    try {
+      var d = JSON.parse(localStorage.getItem('oxu_lead') || '{}');
+      var am = {};
+      if (d.ph) am.ph = String(d.ph).replace(/\D/g, '');
+      if (d.name) {
+        var parts = String(d.name).trim().toLowerCase().split(/\s+/);
+        if (parts[0]) am.fn = parts[0];
+        if (parts.length > 1) am.ln = parts[parts.length - 1];
+      }
+      return am;
+    } catch (e) {
+      return {};
+    }
+  })();
+</script>
     <!-- Meta Pixel Code -->
 <script>
   !function(f,b,e,v,n,t,s)
@@ -36,7 +54,7 @@
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '907889865536630');
+  fbq('init', '907889865536630', oxuAM);
   fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
@@ -55,7 +73,7 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1048523347728876');
+      fbq('init', '1048523347728876', oxuAM);
       fbq('track', 'PageView');
       </script>
       <noscript><img height="1" width="1" style="display:none"

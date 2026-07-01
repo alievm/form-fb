@@ -224,6 +224,10 @@
           backgroundColor: '#22c55e'
         }).showToast();
 
+        try {
+          localStorage.setItem('oxu_lead', JSON.stringify({ ph: phone, name }));
+        } catch (e) {}
+
         setTimeout(() => window.location.href = 'thank-you.html', 500);
       } catch (err) {
         console.error(err);
